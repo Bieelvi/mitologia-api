@@ -13,7 +13,7 @@ class UserOficialController extends Controller
         $userOficial = new UserOficial();
         $userOficial->setFirstName('Gabriel Victor');
 
-        EntityManager::persist($userOficial);
-        EntityManager::flush();
+        // EntityManager::persist($userOficial);
+        // EntityManager::flush();
     }
 }
