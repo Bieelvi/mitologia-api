@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,7 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::redirect('/', '/user');
+Route::redirect('/', '/login');
 
 Route::get('/user', [UserController::class, 'index'])->name('user.index');
 Route::post('/user', [UserController::class, 'store'])->name('user.store');
+
+Route::get('/login', [LoginController::class, 'index'])->name('login.index');
+Route::post('/login', [LoginController::class, 'login'])->name('login.login');

@@ -3,6 +3,8 @@
 namespace App\Entities;
 
 use App\Exceptions\PasswordException;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping AS ORM;
 use Illuminate\Support\Facades\Hash;
 
@@ -37,14 +39,25 @@ class User
     private string $repeatPassword;
 
     /**
-     * @ORM\Column(type="date", name="created_at"))
+     * @ORM\Column(type="datetime", name="created_at"))
      */
-    private \DateTimeImmutable $createdAt;
+    private \DateTime $createdAt;
 
     /**
-     * @ORM\Column(type="date", name="updated_at"))
+     * @ORM\Column(type="datetime", name="updated_at"))
      */
-    private \DateTimeImmutable $updatedAt;
+    private \DateTime $updatedAt;
+
+    /**
+     * @var Collection<int, Login>
+     * @ORM\OneToMany(targetEntity="Login", mappedBy="user_id", cascade={"persist"})
+     */
+    private Collection $access;
+
+    public function __construct()
+    {
+        $this->access = new ArrayCollection();
+    }
 
     public function getId(): int
     {
@@ -75,7 +88,7 @@ class User
 
     public function setPassword(string $password): self
     {
-        $this->password = Hash::make($password);
+        $this->password = $password;
         return $this;
     }
 
@@ -95,37 +108,47 @@ class User
         return $this->repeatPassword; 
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    public function setCreatedAt(\DateTime $createdAt): self
     {
         $this->createdAt = $createdAt;
         return $this;
     }
 
-    public function getCreatedAt(): \DateTimeImmutable
+    public function getCreatedAt(): \DateTime
     {
         return $this->createdAt; 
     }
 
-    public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
+    public function setUpdatedAt(\DateTime $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
         return $this;
     }
 
-    public function getUpdatedAt(): \DateTimeImmutable
+    public function getUpdatedAt(): \DateTime
     {
         return $this->updatedAt; 
     }
 
+    public function hashPassword(): void
+    {
+        $this->password = Hash::make($this->password);
+    }   
+
     public function verifiyPassword(string $password): void
     {
         if (!Hash::check($password, $this->password))
-            throw new PasswordException('Wrong password or email');
+            throw new PasswordException('Incorrect credentials');
     }
 
     public function checkSamePassword(): void
     {
         if (!Hash::check($this->repeatPassword, $this->password))
             throw new PasswordException('Passwords do not match');
+    }
+
+    public function getAccess(): Collection
+    {
+        return $this->access;
     }
 }

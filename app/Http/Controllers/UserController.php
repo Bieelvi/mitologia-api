@@ -34,8 +34,9 @@ class UserController extends Controller
                 ->setEmail($infosForm['email'])
                 ->setPassword($infosForm['password'])
                 ->setRepeatPassword($infosForm['repeatPassword'])
-                ->setCreatedAt(new \DateTimeImmutable())
-                ->setUpdatedAt(new \DateTimeImmutable());            
+                ->setCreatedAt(new \DateTime())
+                ->setUpdatedAt(new \DateTime());
+            $user->hashPassword();            
             $user->checkSamePassword();
 
             EntityManager::persist($user);
@@ -43,9 +44,7 @@ class UserController extends Controller
 
             $message = "User created with success!";                        
             return back()->with('msg', $message);
-        } catch (PasswordException $e) {  
-            return back()->with('msgError', $e->getMessage());
-        } catch (ValidationException $e) {  
+        } catch (PasswordException|ValidationException $e) {  
             return back()->with('msgError', $e->getMessage());
         } catch (\Throwable $e) {
             $message = "Something wrong happened! Contact an administrator";
