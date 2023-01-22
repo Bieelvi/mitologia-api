@@ -14,7 +14,7 @@ class RegisterLogDatabase implements ActionsAfterLoginHandle
         $login->setLoggedAt(new \DateTime())
             ->setUser($user); 
 
-        EntityManager::persist($login);
+        EntityManager::persist($user);
         EntityManager::flush();
     }
 }

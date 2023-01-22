@@ -42,7 +42,7 @@ class LoginController extends Controller
         } catch (ValidationException|PasswordException|NotFoundException $e) { 
             return back()->with('msgError', $e->getMessage());    
         } catch (\Throwable $e) {
-            $message = "Something wrong happened! Contact an administrator" . $e->getMessage();
+            $message = "Something wrong happened! Contact an administrator";
             return back()->with('msgError', $message);
         }
     }
