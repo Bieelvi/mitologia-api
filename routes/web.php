@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\UserOficialController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,8 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::redirect('/', '/user');
 
-Route::get('/useroficial', [UserOficialController::class, 'store']);
+Route::get('/user', [UserController::class, 'index'])->name('user.index');
+Route::post('/user', [UserController::class, 'store'])->name('user.store');
