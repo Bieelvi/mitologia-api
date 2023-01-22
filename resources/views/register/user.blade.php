@@ -42,7 +42,9 @@
                 </form>   
             </div>
         </section>
-    </main>    
+    </main>  
+@include('components.msgError')
+@include('components.msg')  
 </body>
 @include('components.script')
 </html>
