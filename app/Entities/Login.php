@@ -18,7 +18,6 @@ class Login
     private int $id;
 
     /**
-     * @ORM\Column(type="bigint")
      * @ORM\ManyToOne(targetEntity="User", inversedBy="access")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */

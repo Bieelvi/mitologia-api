@@ -11,10 +11,10 @@ class RegisterLogDatabase implements ActionsAfterLoginHandle
     public function execute(User $user): void
     {
         $login = new Login();
-        $login->setLoggedAt(new \DateTime())
-            ->setUser($user); 
+        $login->setUser($user)
+            ->setLoggedAt(new \DateTime());
 
-        EntityManager::persist($user);
+        EntityManager::persist($login);
         EntityManager::flush();
     }
 }

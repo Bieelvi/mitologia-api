@@ -50,7 +50,7 @@ class User
 
     /**
      * @var Collection<int, Login>
-     * @ORM\OneToMany(targetEntity="Login", mappedBy="user_id", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Login", mappedBy="user")
      */
     private Collection $access;
 
