@@ -39,6 +39,8 @@ class LoginController extends Controller
             $this->loginHandle->addActions(new RegisterLogDatabase());
             $this->loginHandle->execute($user);
 
+            $message = "Successfully logged in";
+            return response()->redirectToRoute('home.index')->with('msg', $message);
         } catch (ValidationException|PasswordException|NotFoundException $e) { 
             return back()->with('msgError', $e->getMessage());    
         } catch (\Throwable $e) {

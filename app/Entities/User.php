@@ -31,12 +31,14 @@ class User
      */
     private string $email;
 
-    /**
-     * @ORM\Column(type="string")
-     */
     private string $password;
 
     private string $repeatPassword;
+
+    /**
+     * @ORM\Column(type="string", name="password")
+     */
+    private string $hashedPassword;
 
     /**
      * @ORM\Column(type="datetime", name="created_at"))
@@ -132,18 +134,18 @@ class User
 
     public function hashPassword(): void
     {
-        $this->password = Hash::make($this->password);
+        $this->hashedPassword = Hash::make($this->password);
     }   
 
     public function verifiyPassword(string $password): void
     {
-        if (!Hash::check($password, $this->password))
+        if (!Hash::check($password, $this->hashedPassword))
             throw new PasswordException('Incorrect credentials');
     }
 
     public function checkSamePassword(): void
     {
-        if (!Hash::check($this->repeatPassword, $this->password))
+        if (!Hash::check($this->repeatPassword, $this->hashedPassword))
             throw new PasswordException('Passwords do not match');
     }
 

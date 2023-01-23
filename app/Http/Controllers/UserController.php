@@ -2,14 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\LoginHandle\RegisterLogDatabase;
 use App\Entities\User;
 use App\Exceptions\PasswordException;
+use App\Handles\LoginHandle;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use LaravelDoctrine\ORM\Facades\EntityManager;
 
 class UserController extends Controller
 {
+    private LoginHandle $loginHandle;
+
+    public function __construct(LoginHandle $loginHandle)
+    {
+        $this->loginHandle = $loginHandle;
+    }
+
     public function index() 
     {
         $titlePage = 'Mitology - Register';
@@ -42,8 +51,11 @@ class UserController extends Controller
             EntityManager::persist($user);
             EntityManager::flush();
 
-            $message = "User created with success!";                        
-            return back()->with('msg', $message);
+            $this->loginHandle->addActions(new RegisterLogDatabase());
+            $this->loginHandle->execute($user);
+
+            $message = "User successfully created";             
+            return response()->redirectToRoute('home.index')->with('msg', $message);
         } catch (PasswordException|ValidationException $e) {  
             return back()->with('msgError', $e->getMessage());
         } catch (\Throwable $e) {
