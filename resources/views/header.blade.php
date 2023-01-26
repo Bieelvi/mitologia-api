@@ -21,6 +21,19 @@
                         <a class="nav-link" href="#">API</a>
                     </div>
                 </div>
+                <div class="navbar-nav">
+                    @if (Session::has('logged_user'))
+                        <form action="{{ url('/logout') }}" method="post">
+                            @csrf
+                            <input type="submit" class="btn text-white" value="Logout">
+                        </form>    
+                    @else                        
+                        <form action="{{ url('/get') }}" method="post">
+                            @csrf
+                            <input type="submit" class="btn text-white" value="Login">
+                        </form>    
+                    @endif
+                </div>
             </div>
         </nav>
     </header>

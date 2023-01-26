@@ -8,7 +8,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $titlePage = "Mitology - Homepage";
+        $titlePage = "Mythology - Homepage";
 
         return view('home', compact(
             'titlePage'

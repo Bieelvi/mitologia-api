@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @include('components.link')
-    <title>Mitology - Register</title>
+    <title>Mythology - Register</title>
 </head>
 <body class="bg-dark">
     <main class="d-flex flex-column justify-content-center align-items-center" style="height: 100vh">
         <section>
             <div class="text-white text-center">
-                <h1>MITOLOGY API</h1>
+                <h1>MYTHOLOGY API</h1>
             </div>
             <div class="bg-light rounded px-5 py-5">
                 <form action="{{ route('user.store') }}" method="post">

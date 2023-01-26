@@ -31,6 +31,11 @@ class User
      */
     private string $email;
 
+    /**
+     * @ORM\Column(type="boolean", name="verified_email")
+     */
+    private bool $verifiedEmail;
+
     private string $password;
 
     private string $repeatPassword;
@@ -41,12 +46,12 @@ class User
     private string $hashedPassword;
 
     /**
-     * @ORM\Column(type="datetime", name="created_at"))
+     * @ORM\Column(type="datetime", name="created_at")
      */
     private \DateTime $createdAt;
 
     /**
-     * @ORM\Column(type="datetime", name="updated_at"))
+     * @ORM\Column(type="datetime", name="updated_at")
      */
     private \DateTime $updatedAt;
 
@@ -59,6 +64,7 @@ class User
     public function __construct()
     {
         $this->access = new ArrayCollection();
+        $this->verifiedEmail = false;
     }
 
     public function getId(): int
@@ -86,6 +92,17 @@ class User
     public function getEmail(): string
     {
         return $this->email; 
+    }
+
+    public function setVerifiedEmail(bool $verifiedEmail): self
+    {
+        $this->verifiedEmail = $verifiedEmail;
+        return $this;
+    }
+
+    public function getVerifiedEmail(): bool
+    {
+        return $this->verifiedEmail; 
     }
 
     public function setPassword(string $password): self

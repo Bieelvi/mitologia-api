@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\LoginHandle\CreateLoggedUserSession;
 use App\Actions\LoginHandle\RegisterLogDatabase;
 use App\Entities\User;
 use App\Exceptions\PasswordException;
 use App\Handles\LoginHandle;
+use App\Repositories\UserRepository;
+use Doctrine\ORM\Mapping\Entity;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use LaravelDoctrine\ORM\Facades\EntityManager;
@@ -13,15 +16,17 @@ use LaravelDoctrine\ORM\Facades\EntityManager;
 class UserController extends Controller
 {
     private LoginHandle $loginHandle;
+    private UserRepository $repository;
 
-    public function __construct(LoginHandle $loginHandle)
+    public function __construct(LoginHandle $loginHandle, UserRepository $repository)
     {
         $this->loginHandle = $loginHandle;
+        $this->repository = $repository;
     }
 
     public function index() 
     {
-        $titlePage = 'Mitology - Register';
+        $titlePage = 'Mythology - Register';
 
         return view('register.user', compact(
             'titlePage'
@@ -38,6 +43,12 @@ class UserController extends Controller
                 'repeatPassword' => 'required|max:75'
             ]);
 
+            $user = $this->repository->findOneBy(['email' => $infosForm['email']]);
+            if (!is_null($user)) {
+                return back()
+                    ->with('msgError', 'A user already exists for this email. Please choose another');
+            } 
+
             $user = new User();
             $user->setNickname($infosForm['nickname'])
                 ->setEmail($infosForm['email'])
@@ -51,16 +62,46 @@ class UserController extends Controller
             EntityManager::persist($user);
             EntityManager::flush();
 
+            $this->loginHandle->addActions(new CreateLoggedUserSession());
             $this->loginHandle->addActions(new RegisterLogDatabase());
             $this->loginHandle->execute($user);
-
-            $message = "User successfully created";             
-            return response()->redirectToRoute('home.index')->with('msg', $message);
+  
+            return response()
+                ->redirectToRoute('home.index')
+                ->with('msg', "User successfully created");
         } catch (PasswordException|ValidationException $e) {  
             return back()->with('msgError', $e->getMessage());
         } catch (\Throwable $e) {
-            $message = "Something wrong happened! Contact an administrator";
-            return back()->with('msgError', $message);
+            return back()
+                ->with('msgError', "Something wrong happened! Contact an administrator");
         }        
+    }
+
+    public function update(int $id, Request $request)
+    {
+        try {
+            $infosForm = $request->validate([
+                'nickname' => 'required|max:25'
+            ]);
+    
+            $user = $this->repository->findOneBy(['id' => $id]);
+            if (is_null($user)) {
+                return redirect()
+                    ->route('login.index')
+                    ->with('msgError', 'User not found. Please contact the administrator for more information.');
+            }
+    
+            $user->setNickname($infosForm['nickname'])
+                ->setUpdatedAt(new \DateTime());
+    
+            EntityManager::flush();
+    
+            return redirect()
+                ->route('profile.index')
+                ->with('msg', "User successfully updated");
+        } catch (\Throwable $e) {
+            return back()
+                ->with('msgError', "Something wrong happened! Contact an administrator");
+        }  
     }
 }

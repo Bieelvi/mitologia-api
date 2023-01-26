@@ -1,8 +1,13 @@
 <?php
 
+use App\Http\Controllers\EmailController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\LogoutController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use App\Mail\VerifiedEmail;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,4 +29,22 @@ Route::post('/user', [UserController::class, 'store'])->name('user.store');
 Route::get('/login', [LoginController::class, 'index'])->name('login.index');
 Route::post('/login', [LoginController::class, 'login'])->name('login.login');
 
-Route::get('/home', [HomeController::class, 'index'])->name('home.index');
+Route::middleware('user.logged')->group(function() {
+    Route::get('/home', [HomeController::class, 'index'])->name('home.index');
+    
+    Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
+    
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+
+    Route::patch('/user/{id}', [UserController::class, 'update'])->name('user.update');
+    Route::patch('/user/{id}/email', [EmailController::class, 'update'])->name('user.update.email');
+});
+
+// Route::get('/email', function() {
+//     $email = new VerifiedEmail();
+//     $email->envelope();
+
+//     Mail::to('bieelvii13@gmail.com')
+//         ->cc('bieelvii13@gmail.com')
+//         ->send($email);
+// });

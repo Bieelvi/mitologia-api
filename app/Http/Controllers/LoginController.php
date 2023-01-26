@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\LoginHandle\CreateLoggedUserSession;
 use App\Actions\LoginHandle\RegisterLogDatabase;
 use App\Entities\User;
 use App\Exceptions\NotFoundException;
@@ -36,16 +37,19 @@ class LoginController extends Controller
             $user->setEmail($infosForm['email'])
                 ->setPassword($infosForm['password']);
             
+            $this->loginHandle->addActions(new CreateLoggedUserSession());
             $this->loginHandle->addActions(new RegisterLogDatabase());
             $this->loginHandle->execute($user);
 
-            $message = "Successfully logged in";
-            return response()->redirectToRoute('home.index')->with('msg', $message);
+            return redirect()
+                ->route('home.index')
+                ->with('msg', "Successfully logged in");
         } catch (ValidationException|PasswordException|NotFoundException $e) { 
-            return back()->with('msgError', $e->getMessage());    
+            return back()
+                ->with('msgError', $e->getMessage());    
         } catch (\Throwable $e) {
-            $message = "Something wrong happened! Contact an administrator";
-            return back()->with('msgError', $message);
+            return back()
+                ->with('msgError', "Something wrong happened! Contact an administrator");
         }
     }
 }

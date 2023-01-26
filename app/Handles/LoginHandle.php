@@ -33,7 +33,7 @@ class LoginHandle
             throw new NotFoundException("User not found!");
 
         $user->verifiyPassword($userLogin->getPassword());
-
+        
         foreach ($this->actions as $action) {
             $action->execute($user);
         }
