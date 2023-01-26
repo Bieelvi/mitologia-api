@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Actions\LoginHandle\CreateLoggedUserSession;
 use App\Actions\LoginHandle\RegisterLogDatabase;
+use App\Entities\Email;
 use App\Entities\User;
 use App\Exceptions\PasswordException;
 use App\Handles\LoginHandle;
+use App\Repositories\EmailRepository;
 use App\Repositories\UserRepository;
-use Doctrine\ORM\Mapping\Entity;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use LaravelDoctrine\ORM\Facades\EntityManager;
@@ -17,11 +18,13 @@ class UserController extends Controller
 {
     private LoginHandle $loginHandle;
     private UserRepository $repository;
+    private EmailRepository $emailRepository;
 
-    public function __construct(LoginHandle $loginHandle, UserRepository $repository)
+    public function __construct(LoginHandle $loginHandle, UserRepository $repository, EmailRepository $emailRepository)
     {
         $this->loginHandle = $loginHandle;
         $this->repository = $repository;
+        $this->emailRepository = $emailRepository;
     }
 
     public function index() 
@@ -43,21 +46,26 @@ class UserController extends Controller
                 'repeatPassword' => 'required|max:75'
             ]);
 
-            $user = $this->repository->findOneBy(['email' => $infosForm['email']]);
-            if (!is_null($user)) {
+            $email = $this->emailRepository->findOneBy(['main' => $infosForm['email']]);
+            if (!is_null($email)) {
                 return back()
                     ->with('msgError', 'A user already exists for this email. Please choose another');
             } 
 
+            $email = new Email();
+            $email->setMain($infosForm['email']);
+
             $user = new User();
             $user->setNickname($infosForm['nickname'])
-                ->setEmail($infosForm['email'])
+                ->setEmail($email)
                 ->setPassword($infosForm['password'])
                 ->setRepeatPassword($infosForm['repeatPassword'])
                 ->setCreatedAt(new \DateTime())
                 ->setUpdatedAt(new \DateTime());
             $user->hashPassword();            
             $user->checkSamePassword();
+
+            $email->setUser($user);
 
             EntityManager::persist($user);
             EntityManager::flush();

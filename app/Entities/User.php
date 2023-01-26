@@ -27,14 +27,9 @@ class User
     private string $nickname;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\OneToOne(targetEntity="Email", mappedBy="user", cascade={"persist", "remove"})
      */
-    private string $email;
-
-    /**
-     * @ORM\Column(type="boolean", name="verified_email")
-     */
-    private bool $verifiedEmail;
+    private Email $email;
 
     private string $password;
 
@@ -57,14 +52,13 @@ class User
 
     /**
      * @var Collection<int, Login>
-     * @ORM\OneToMany(targetEntity="Login", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="Login", mappedBy="user", cascade={"persist", "remove"})
      */
     private Collection $access;
 
     public function __construct()
     {
         $this->access = new ArrayCollection();
-        $this->verifiedEmail = false;
     }
 
     public function getId(): int
@@ -83,26 +77,15 @@ class User
         return $this->nickname; 
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(Email $email): self
     {
         $this->email = $email;
         return $this;
     }
 
-    public function getEmail(): string
+    public function getEmail(): Email
     {
         return $this->email; 
-    }
-
-    public function setVerifiedEmail(bool $verifiedEmail): self
-    {
-        $this->verifiedEmail = $verifiedEmail;
-        return $this;
-    }
-
-    public function getVerifiedEmail(): bool
-    {
-        return $this->verifiedEmail; 
     }
 
     public function setPassword(string $password): self

@@ -29,7 +29,7 @@ class LogoutHandle
         $crypt = new UserCrypt();
         $userDecrypt = $crypt->decrypt(session()->get('logged_user'));
         $user = $this->repository->findOneBy([
-            'email' => $userDecrypt->getEmail()
+            'id' => $userDecrypt->getId()
         ]);
         if (is_null($user)) {
             throw new NotFoundException('User not found!');

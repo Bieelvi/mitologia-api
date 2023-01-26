@@ -38,13 +38,5 @@ Route::middleware('user.logged')->group(function() {
 
     Route::patch('/user/{id}', [UserController::class, 'update'])->name('user.update');
     Route::patch('/user/{id}/email', [EmailController::class, 'update'])->name('user.update.email');
+    Route::post('/user/{id}/verified/email', [EmailController::class, 'verified'])->name('user.verified.email');
 });
-
-// Route::get('/email', function() {
-//     $email = new VerifiedEmail();
-//     $email->envelope();
-
-//     Mail::to('bieelvii13@gmail.com')
-//         ->cc('bieelvii13@gmail.com')
-//         ->send($email);
-// });

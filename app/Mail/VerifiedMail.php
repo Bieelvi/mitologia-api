@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Entities\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -10,8 +11,10 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class VerifiedEmail extends Mailable
+class VerifiedMail extends Mailable
 {
+    private User $user;
+
     use Queueable, SerializesModels;
 
     /**
@@ -19,9 +22,9 @@ class VerifiedEmail extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(User $user)
     {
-        //
+        $this->user = $user;
     }
 
     /**
@@ -45,6 +48,9 @@ class VerifiedEmail extends Mailable
     {
         return new Content(
             view: 'emails.verifiedEmail',
+            with: [
+                'user' => $this->user
+            ]
         );
     }
 

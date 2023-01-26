@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\LoginHandle\CreateLoggedUserSession;
 use App\Actions\LoginHandle\RegisterLogDatabase;
+use App\Entities\Email;
 use App\Entities\User;
 use App\Exceptions\NotFoundException;
 use App\Exceptions\PasswordException;
@@ -32,9 +33,12 @@ class LoginController extends Controller
                 'email' => 'required',
                 'password' => 'required'
             ]);
-            
+
+            $email = new Email();
+            $email->setMain($infosForm['email']);  
+
             $user = new User();
-            $user->setEmail($infosForm['email'])
+            $user->setEmail($email)
                 ->setPassword($infosForm['password']);
             
             $this->loginHandle->addActions(new CreateLoggedUserSession());

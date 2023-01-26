@@ -5,15 +5,15 @@ namespace App\Handles;
 use App\Actions\LoginHandle\ActionsAfterLoginHandle;
 use App\Entities\User;
 use App\Exceptions\NotFoundException;
-use App\Repositories\UserRepository;
+use App\Repositories\EmailRepository;
 
 class LoginHandle 
 {
     /** @var ActionsAfterLoginHandle[] */
     private array $actions;
-    private UserRepository $repository;
+    private EmailRepository $repository;
 
-    public function __construct(UserRepository $repository)
+    public function __construct(EmailRepository $repository)
     {
         $this->actions = [];
         $this->repository = $repository;
@@ -24,18 +24,18 @@ class LoginHandle
         $this->actions[] = $actionsAfterLoginHandle;
     }
 
-    public function execute(User $userLogin)
+    public function execute(User $user)
     {
-        $user = $this->repository->findOneBy([
-            'email' => $userLogin->getEmail()
+        $email = $this->repository->findOneBy([
+            'main' => $user->getEmail()->getMain()
         ]);
-        if (is_null($user))
+        if (is_null($email))
             throw new NotFoundException("User not found!");
 
-        $user->verifiyPassword($userLogin->getPassword());
+        $email->getUser()->verifiyPassword($user->getPassword());
         
         foreach ($this->actions as $action) {
-            $action->execute($user);
+            $action->execute($email->getUser());
         }
     }
 }

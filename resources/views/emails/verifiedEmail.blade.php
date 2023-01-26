@@ -2,7 +2,12 @@
 
 <body class="bg-dark">
     <section>
-        Thanks for signing up for Mythology. To complete your registration <a href="#">Click Here</a> to confirm your email.
+        <div>
+            Hello, {{ $user->getNickname() }}!
+        </div>
+        <div>
+            Thanks for signing up for Mythology. To complete your registration <a href="#">Click Here</a> to confirm your email.
+        </div>
     </section>
 
     @include('components.msgError')
