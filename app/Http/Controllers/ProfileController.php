@@ -22,6 +22,8 @@ class ProfileController extends Controller
 
             $crypt = new UserCrypt();
             $user = $crypt->decrypt(session()->get('logged_user'));
+
+            $user = $this->repository->findOneBy(['id' => $user->getId()]);          
             if (is_null($user)) {
                 return redirect()
                     ->route('login.index')
