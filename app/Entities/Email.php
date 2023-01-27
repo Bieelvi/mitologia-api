@@ -38,9 +38,9 @@ class Email
     private \DateTime $verifiedAt;
 
     /**
-     * @ORM\Column(type="string", name="hash_verified", nullable="true")
-     */
-    private string $hashVerified;
+     * @ORM\Column(type="string", name="hash_verified", length="1000", nullable="true")
+     */ 
+    private ?string $hashVerified;
 
     /**
     * @ORM\OneToOne(targetEntity="User", inversedBy="email", cascade={"persist", "remove"})
@@ -108,13 +108,13 @@ class Email
         return $this->verifiedAt;
     }
 
-    public function setHashVerified(string $hashVerified): self
+    public function setHashVerified(?string $hashVerified): self
     {
         $this->hashVerified = $hashVerified;
         return $this;
     }
 
-    public function getHashVerified(): string
+    public function getHashVerified(): ?string
     {
         return $this->hashVerified;
     }

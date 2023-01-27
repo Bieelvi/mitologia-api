@@ -1,12 +1,12 @@
 @include('components.link')
 
-<body class="bg-dark">
+<body>
     <section>
         <div>
             Hello, {{ $user->getNickname() }}!
         </div>
         <div>
-            Thanks for signing up for Mythology. To complete your registration <a href="#">Click Here</a> to confirm your email.
+            Thanks for signing up for Mythology. To complete your registration <a href="{{ $link }}">Click Here</a> to confirm your email.
         </div>
     </section>
 

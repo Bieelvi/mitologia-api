@@ -14,6 +14,7 @@ use Illuminate\Queue\SerializesModels;
 class VerifiedMail extends Mailable
 {
     private User $user;
+    private string $link;
 
     use Queueable, SerializesModels;
 
@@ -22,9 +23,10 @@ class VerifiedMail extends Mailable
      *
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct(User $user, string $link)
     {
         $this->user = $user;
+        $this->link = $link;
     }
 
     /**
@@ -49,7 +51,8 @@ class VerifiedMail extends Mailable
         return new Content(
             view: 'emails.verifiedEmail',
             with: [
-                'user' => $this->user
+                'user' => $this->user,
+                'link' => $this->link
             ]
         );
     }

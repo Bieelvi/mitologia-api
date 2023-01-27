@@ -17,7 +17,7 @@
         </div>
     </form>  
     
-    <form action="{{ route('user.verified.email', ['id' => $user->getId()]) }}" method="post" class="col-sm-6">
+    <form action="{{ route('user.send.email', ['id' => $user->getId()]) }}" method="post" class="col-sm-6">
         @csrf
        
         <div class="mb-3">

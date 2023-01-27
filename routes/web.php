@@ -38,5 +38,6 @@ Route::middleware('user.logged')->group(function() {
 
     Route::patch('/user/{id}', [UserController::class, 'update'])->name('user.update');
     Route::patch('/user/{id}/email', [EmailController::class, 'update'])->name('user.update.email');
-    Route::post('/user/{id}/verified/email', [EmailController::class, 'verified'])->name('user.verified.email');
+    Route::post('/user/{id}/verified/email', [EmailController::class, 'send'])->name('user.send.email');
+    Route::get('/user/{id}/verified/email', [EmailController::class, 'verified'])->name('user.verified.email');
 });
