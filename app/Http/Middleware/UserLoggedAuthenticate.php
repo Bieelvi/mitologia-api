@@ -51,7 +51,8 @@ class UserLoggedAuthenticate
                 ->route('login.index')
                 ->with('msgError', $e->getMessage());
         } catch (\Throwable $e) {
-            return back()
+            return redirect()
+                ->route('login.index')
                 ->with('msgError', "Something wrong happened! Contact an administrator");
         }  
     }
