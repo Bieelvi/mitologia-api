@@ -56,6 +56,12 @@ class User
      */
     private Collection $access;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Role", inversedBy="users")
+     * @ORM\JoinColumn(name="role_id", referencedColumnName="id")
+     */
+    private Role $role;
+
     public function __construct()
     {
         $this->access = new ArrayCollection();
@@ -152,5 +158,16 @@ class User
     public function getAccess(): Collection
     {
         return $this->access;
+    }
+
+    public function setRole(Role $role): self
+    {
+        $this->role = $role;
+        return $this;
+    }
+
+    public function getRole(): Role
+    {
+        return $this->role; 
     }
 }
