@@ -67,10 +67,10 @@ class User extends \App\Entities\User implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'App\\Entities\\User' . "\0" . 'id', '' . "\0" . 'App\\Entities\\User' . "\0" . 'nickname', '' . "\0" . 'App\\Entities\\User' . "\0" . 'email', '' . "\0" . 'App\\Entities\\User' . "\0" . 'password', '' . "\0" . 'App\\Entities\\User' . "\0" . 'repeatPassword', '' . "\0" . 'App\\Entities\\User' . "\0" . 'hashedPassword', '' . "\0" . 'App\\Entities\\User' . "\0" . 'createdAt', '' . "\0" . 'App\\Entities\\User' . "\0" . 'updatedAt', '' . "\0" . 'App\\Entities\\User' . "\0" . 'access'];
+            return ['__isInitialized__', '' . "\0" . 'App\\Entities\\User' . "\0" . 'id', '' . "\0" . 'App\\Entities\\User' . "\0" . 'nickname', '' . "\0" . 'App\\Entities\\User' . "\0" . 'email', '' . "\0" . 'App\\Entities\\User' . "\0" . 'password', '' . "\0" . 'App\\Entities\\User' . "\0" . 'repeatPassword', '' . "\0" . 'App\\Entities\\User' . "\0" . 'hashedPassword', '' . "\0" . 'App\\Entities\\User' . "\0" . 'createdAt', '' . "\0" . 'App\\Entities\\User' . "\0" . 'updatedAt', '' . "\0" . 'App\\Entities\\User' . "\0" . 'access', '' . "\0" . 'App\\Entities\\User' . "\0" . 'role'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'App\\Entities\\User' . "\0" . 'id', '' . "\0" . 'App\\Entities\\User' . "\0" . 'nickname', '' . "\0" . 'App\\Entities\\User' . "\0" . 'email', '' . "\0" . 'App\\Entities\\User' . "\0" . 'password', '' . "\0" . 'App\\Entities\\User' . "\0" . 'repeatPassword', '' . "\0" . 'App\\Entities\\User' . "\0" . 'hashedPassword', '' . "\0" . 'App\\Entities\\User' . "\0" . 'createdAt', '' . "\0" . 'App\\Entities\\User' . "\0" . 'updatedAt', '' . "\0" . 'App\\Entities\\User' . "\0" . 'access'];
+        return ['__isInitialized__', '' . "\0" . 'App\\Entities\\User' . "\0" . 'id', '' . "\0" . 'App\\Entities\\User' . "\0" . 'nickname', '' . "\0" . 'App\\Entities\\User' . "\0" . 'email', '' . "\0" . 'App\\Entities\\User' . "\0" . 'password', '' . "\0" . 'App\\Entities\\User' . "\0" . 'repeatPassword', '' . "\0" . 'App\\Entities\\User' . "\0" . 'hashedPassword', '' . "\0" . 'App\\Entities\\User' . "\0" . 'createdAt', '' . "\0" . 'App\\Entities\\User' . "\0" . 'updatedAt', '' . "\0" . 'App\\Entities\\User' . "\0" . 'access', '' . "\0" . 'App\\Entities\\User' . "\0" . 'role'];
     }
 
     /**
@@ -366,6 +366,28 @@ class User extends \App\Entities\User implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAccess', []);
 
         return parent::getAccess();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setRole(\App\Entities\Role $role): \App\Entities\User
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRole', [$role]);
+
+        return parent::setRole($role);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getRole(): \App\Entities\Role
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRole', []);
+
+        return parent::getRole();
     }
 
 }

@@ -42,7 +42,6 @@ class Role
 
     public function __construct()
     {
-        $this->name = 'normal';
         $this->users = new ArrayCollection();
     }
 
