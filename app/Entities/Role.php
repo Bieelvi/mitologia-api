@@ -20,7 +20,7 @@ class Role
     private int $id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", unique=true)
      */
     private string $name;
 
