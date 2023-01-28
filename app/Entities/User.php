@@ -57,7 +57,7 @@ class User
     private Collection $access;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Role", inversedBy="users")
+     * @ORM\ManyToOne(targetEntity="Role", inversedBy="users", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="role_id", referencedColumnName="id")
      */
     private Role $role;
