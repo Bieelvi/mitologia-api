@@ -10,7 +10,7 @@ class HomeController extends Controller
     {
         $titlePage = "Mythology - Homepage";
 
-        return view('home', compact(
+        return view('logged.home.index', compact(
             'titlePage'
         ));
     }
