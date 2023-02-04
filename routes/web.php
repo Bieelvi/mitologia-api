@@ -50,7 +50,7 @@ Route::middleware('user.logged')->group(function() {
     });
 });
 
-Route::get('/login/redirect', function () {
+Route::get('/login/facebook', function () {
     return Socialite::driver('facebook')->redirect();
 });
  
