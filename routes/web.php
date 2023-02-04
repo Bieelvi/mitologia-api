@@ -24,6 +24,8 @@ use Laravel\Socialite\Facades\Socialite;
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
+Route::get('/terms', [HomeController::class, 'index'])->name('home.index');
+
 Route::get('/user', [UserController::class, 'index'])->name('user.index');
 Route::post('/user', [UserController::class, 'store'])->name('user.store');
 
