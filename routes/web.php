@@ -22,7 +22,7 @@ use Laravel\Socialite\Facades\Socialite;
 |
 */
 
-Route::redirect('/', '/login');
+Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
 Route::get('/user', [UserController::class, 'index'])->name('user.index');
 Route::post('/user', [UserController::class, 'store'])->name('user.store');
