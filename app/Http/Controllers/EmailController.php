@@ -64,7 +64,10 @@ class EmailController extends Controller
 
             $user->setUpdatedAt(new \DateTime())
                 ->setPassword($infosForm['password'])
-                ->getEmail()->setMain($infosForm['email']);
+                ->getEmail()
+                ->setMain($infosForm['email'])
+                ->setVerified(false)
+                ->setVerifiedAt(null);
                 
             EntityManager::flush();    
 

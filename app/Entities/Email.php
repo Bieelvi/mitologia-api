@@ -35,7 +35,7 @@ class Email
     /**
      * @ORM\Column(type="datetime", name="verified_at", nullable="true")
      */
-    private \DateTime $verifiedAt;
+    private ?\DateTime $verifiedAt;
 
     /**
      * @ORM\Column(type="string", name="hash_verified", length="1000", nullable="true")
@@ -97,13 +97,13 @@ class Email
         return $this->verified;
     }
 
-    public function setVerifiedAt(\DateTime $verifiedAt): self
+    public function setVerifiedAt(?\DateTime $verifiedAt): self
     {
         $this->verifiedAt = $verifiedAt;
         return $this;
     }
 
-    public function getVerifiedAt(): \DateTime
+    public function getVerifiedAt(): ?\DateTime
     {
         return $this->verifiedAt;
     }
