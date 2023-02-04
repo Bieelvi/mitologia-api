@@ -9,6 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Mail\VerifiedEmail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,4 +48,14 @@ Route::middleware('user.logged')->group(function() {
             dump('oi');
         });
     });
+});
+
+Route::get('/auth/redirect', function () {
+    return Socialite::driver('facebook')->redirect();
+});
+ 
+Route::get('/auth/callback', function () {
+    $user = Socialite::driver('facebook')->user();
+ 
+    dd($user);
 });
