@@ -50,11 +50,11 @@ Route::middleware('user.logged')->group(function() {
     });
 });
 
-Route::get('/auth/redirect', function () {
+Route::get('/login/redirect', function () {
     return Socialite::driver('facebook')->redirect();
 });
  
-Route::get('/auth/callback', function () {
+Route::get('/login/facebook/callback', function () {
     $user = Socialite::driver('facebook')->user();
  
     dd($user);
