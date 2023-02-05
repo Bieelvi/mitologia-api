@@ -52,13 +52,13 @@ Route::middleware('user.logged')->group(function() {
     });
 });
 
-Route::get('/login/facebook', function () {
-    return Socialite::driver('facebook')->redirect();
+Route::get('/login/{provider}', function ($provider) {
+    return Socialite::driver($provider)->redirect();
 });
  
-Route::get('/login/facebook/callback', function () {
+Route::get('/login/{provider}/callback', function ($provider) {
     try {
-        $user = Socialite::driver('facebook')->user();
+        $user = Socialite::driver($provider)->user();
      
         dd($user);
     } catch (\Throwable $e) {
