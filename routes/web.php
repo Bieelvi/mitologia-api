@@ -57,7 +57,11 @@ Route::get('/login/facebook', function () {
 });
  
 Route::get('/login/facebook/callback', function () {
-    $user = Socialite::driver('facebook')->user();
- 
-    dd($user);
+    try {
+        $user = Socialite::driver('facebook')->user();
+     
+        dd($user);
+    } catch (\Throwable $e) {
+        dd($e);
+    }
 });
