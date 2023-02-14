@@ -100,6 +100,8 @@ Route::get('/login/{provider}/callback', function ($provider) {
             ->redirectToRoute('home.index')
             ->with('msg', "User successfully created");
     } catch (\Throwable $e) {
-        return back()->with('msgError', "Something happened when trying to login with {$provider}");
+        return response()
+            ->redirectToRoute('home.index')
+            ->with('msgError', "Something happened when trying to login with {$provider}");
     }
 });
