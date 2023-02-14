@@ -88,6 +88,10 @@ class LoginController extends Controller
     
             EntityManager::persist($user);
             EntityManager::flush();
+
+            $this->loginHandle->addActions(new CreateLoggedUserSession());
+            $this->loginHandle->addActions(new RegisterLogDatabase());
+            $this->loginHandle->execute($user);
     
             return response()
                 ->redirectToRoute('home.index')
