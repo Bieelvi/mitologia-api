@@ -1,5 +1,7 @@
 <?php
 
+use App\Entities\Email;
+use App\Entities\User;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
@@ -10,6 +12,7 @@ use App\Mail\VerifiedEmail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
+use LaravelDoctrine\ORM\Facades\EntityManager;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,15 +56,50 @@ Route::middleware('user.logged')->group(function() {
 });
 
 Route::get('/login/{provider}', function ($provider) {
-    return Socialite::driver($provider)->redirect();
+    try {
+        return Socialite::driver($provider)->redirect();
+    } catch (\Throwable $e) {
+        return back()->with('msgError', "Something happened when trying to login with {$provider}");
+    }
 });
  
 Route::get('/login/{provider}/callback', function ($provider) {
     try {
-        $user = Socialite::driver($provider)->user();
+        $userSocialite = Socialite::driver($provider)->user();
      
-        dd($user);
+        $email = $this->emailRepository->findOneBy(['main' => $userSocialite->email]);
+            if (!is_null($email)) {
+                return back()
+                    ->with('msgError', 'A user already exists for this email. Please choose another');
+            } 
+
+        $email = new Email();
+        $email->setMain($userSocialite->email);
+
+        $role = $this->roleRepository->findOneBy(['name' => 'normal']);
+
+        $user = new User();
+        $user->setNickname($userSocialite->nickname)
+            ->setUrlAvatar($userSocialite->avatar)
+            ->setEmail($email)
+            ->setPassword(null)
+            ->setRepeatPassword(null)
+            ->setCreatedAt(new \DateTime())
+            ->setUpdatedAt(new \DateTime())
+            ->setRole($role);
+
+        if ($provider == 'github')
+            $user->setHashGithub($userSocialite->token);
+
+        EntityManager::persist($user);
+        EntityManager::flush();
+
+        $email->setUser($user);
+
+        return response()
+            ->redirectToRoute('home.index')
+            ->with('msg', "User successfully created");
     } catch (\Throwable $e) {
-        dd($e);
+        return back()->with('msgError', "Something happened when trying to login with {$provider}");
     }
 });

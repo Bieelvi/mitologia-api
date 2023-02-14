@@ -31,14 +31,34 @@ class User
      */
     private Email $email;
 
-    private string $password;
+    private ?string $password;
 
-    private string $repeatPassword;
+    private ?string $repeatPassword;
 
     /**
-     * @ORM\Column(type="string", name="password")
+     * @ORM\Column(type="string", name="password", nullable=true)
      */
-    private string $hashedPassword;
+    private ?string $hashedPassword;
+
+    /**
+     * @ORM\Column(type="string", name="hashGithub", nullable=true)
+     */
+    private ?string $hashGithub;
+
+    /**
+     * @ORM\Column(type="string", name="hashFacebook", nullable=true)
+     */
+    private ?string $hashFacebook;
+
+    /**
+     * @ORM\Column(type="string", name="hashGmail", nullable=true)
+     */
+    private ?string $hashGmail;
+
+    /**
+     * @ORM\Column(type="string", name="urlAvatar", nullable=true)
+     */
+    private ?string $urlAvatar;
 
     /**
      * @ORM\Column(type="datetime", name="created_at")
@@ -94,24 +114,24 @@ class User
         return $this->email; 
     }
 
-    public function setPassword(string $password): self
+    public function setPassword(?string $password): self
     {
         $this->password = $password;
         return $this;
     }
 
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password; 
     }
 
-    public function setRepeatPassword(string $repeatPassword): self
+    public function setRepeatPassword(?string $repeatPassword): self
     {
         $this->repeatPassword = $repeatPassword;
         return $this;
     }
 
-    public function getRepeatPassword(): string
+    public function getRepeatPassword(): ?string
     {
         return $this->repeatPassword; 
     }
@@ -169,5 +189,49 @@ class User
     public function getRole(): Role
     {
         return $this->role; 
+    }
+
+    public function setHashFacebook(?string $hashFacebook): self
+    {
+        $this->hashFacebook = $hashFacebook;
+        return $this;
+    }
+
+    public function getHashFacebook(): ?string
+    {
+        return $this->hashFacebook; 
+    }
+
+    public function setHashGithub(?string $hashGithub): self
+    {
+        $this->hashGithub = $hashGithub;
+        return $this;
+    }
+
+    public function getHashGithub(): ?string
+    {
+        return $this->hashGithub; 
+    }
+
+    public function setHashGmail(?string $hashGmail): self
+    {
+        $this->hashGmail = $hashGmail;
+        return $this;
+    }
+
+    public function getHashGmail(): ?string
+    {
+        return $this->hashGmail; 
+    }
+
+    public function setUrlAvatar(?string $urlAvatar): self
+    {
+        $this->urlAvatar = $urlAvatar;
+        return $this;
+    }
+
+    public function getUrlAvatar(): ?string
+    {
+        return $this->urlAvatar; 
     }
 }
