@@ -55,10 +55,10 @@ class LoginController extends Controller
             $this->loginHandle->addActions(new CreateLoggedUserSession());
             $this->loginHandle->addActions(new RegisterLogDatabase());
             $this->loginHandle->execute($user);
-
-            return redirect()
-                ->route('home.index')
-                ->with('msg', "Successfully logged in");
+  
+            return response()
+                ->redirectToRoute('home.index')
+                ->with('msg', "User successfully created");
         } catch (ValidationException|PasswordException|NotFoundException $e) { 
             return back()
                 ->with('msgError', $e->getMessage());    
@@ -85,6 +85,8 @@ class LoginController extends Controller
                 'url_avatar' => $userSocialite->avatar,
                 'github' => $userSocialite->avatar
             ]);
+
+            dd($user);
     
             EntityManager::persist($user);
             EntityManager::flush();
