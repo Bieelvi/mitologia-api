@@ -63,45 +63,4 @@ Route::get('/login/{provider}', function ($provider) {
     }
 });
  
-Route::get('/login/{provider}/callback', function ($provider) {
-    try {
-        $userSocialite = Socialite::driver($provider)->user();
-     
-        $email = $this->emailRepository->findOneBy(['main' => $userSocialite->email]);
-            if (!is_null($email)) {
-                return back()
-                    ->with('msgError', 'A user already exists for this email. Please choose another');
-            } 
-
-        $email = new Email();
-        $email->setMain($userSocialite->email);
-
-        $role = $this->roleRepository->findOneBy(['name' => 'normal']);
-
-        $user = new User();
-        $user->setNickname($userSocialite->nickname)
-            ->setUrlAvatar($userSocialite->avatar)
-            ->setEmail($email)
-            ->setPassword(null)
-            ->setRepeatPassword(null)
-            ->setCreatedAt(new \DateTime())
-            ->setUpdatedAt(new \DateTime())
-            ->setRole($role);
-
-        if ($provider == 'github')
-            $user->setHashGithub($userSocialite->token);
-
-        EntityManager::persist($user);
-        EntityManager::flush();
-
-        $email->setUser($user);
-
-        return response()
-            ->redirectToRoute('home.index')
-            ->with('msg', "User successfully created");
-    } catch (\Throwable $e) {
-        return response()
-            ->redirectToRoute('home.index')
-            ->with('msgError', "Something happened when trying to login with {$provider}");
-    }
-});
+Route::get('/login/{provider}/callback', [LoginController::class, 'loginSocialite']);
