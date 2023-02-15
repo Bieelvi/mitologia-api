@@ -32,6 +32,16 @@ Route::get('/terms', [HomeController::class, 'index'])->name('home.index');
 Route::get('/user', [UserController::class, 'index'])->name('user.index');
 Route::post('/user', [UserController::class, 'store'])->name('user.store');
 
+Route::get('/login/{provider}', function ($provider) {
+    try {
+        return Socialite::driver($provider)->redirect();
+    } catch (\Throwable $e) {
+        return back()->with('msgError', "Something happened when trying to login with {$provider}");
+    }
+});
+ 
+Route::get('/login/{provider}/callback', [LoginController::class, 'loginSocialite']);
+
 Route::get('/login', [LoginController::class, 'index'])->name('login.index');
 Route::post('/login', [LoginController::class, 'login'])->name('login.login');
 
@@ -54,13 +64,3 @@ Route::middleware('user.logged')->group(function() {
         });
     });
 });
-
-Route::get('/login/{provider}', function ($provider) {
-    try {
-        return Socialite::driver($provider)->redirect();
-    } catch (\Throwable $e) {
-        return back()->with('msgError', "Something happened when trying to login with {$provider}");
-    }
-});
- 
-Route::get('/login/{provider}/callback', [LoginController::class, 'loginSocialite']);
