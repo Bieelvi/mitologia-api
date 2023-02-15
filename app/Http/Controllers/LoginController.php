@@ -72,8 +72,6 @@ class LoginController extends Controller
     {
         try {
             $userSocialite = Socialite::driver($provider)->user();
-
-            dd($userSocialite);
          
             $email = $this->emailRepository->findOneBy(['main' => $userSocialite->email]);
             if (!is_null($email)) {
@@ -101,8 +99,9 @@ class LoginController extends Controller
                 ->redirectToRoute('home.index')
                 ->with('msg', "User successfully created with {$provider}");
         } catch (\Throwable $e) {
+            dd($e);
             return response()
-                ->redirectToRoute('home.index')
+                ->redirectToRoute('login.index')
                 ->with('msgError', "Something happened when trying to login with {$provider}");
         }
     }
