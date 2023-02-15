@@ -97,7 +97,6 @@ class LoginController extends Controller
                 ->redirectToRoute('home.index')
                 ->with('msg', "User successfully created with {$provider}");
         } catch (\Throwable $e) {
-            dd($e);
             return response()
                 ->redirectToRoute('login.index')
                 ->with('msgError', "Something happened when trying to login with {$provider}");

@@ -32,7 +32,8 @@ class LoginHandle
         if (is_null($email))
             throw new NotFoundException("User not found!");
 
-        $email->getUser()->verifiyPassword($user->getPassword());
+        if (!$email->getUser()->getHashGithub() && !$email->getUser()->getHashFacebook() && !$email->getUser()->getHashGmail())  
+            $email->getUser()->verifiyPassword($user->getPassword());
         
         foreach ($this->actions as $action) {
             $action->execute($email->getUser());
