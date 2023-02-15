@@ -72,6 +72,8 @@ class LoginController extends Controller
     {
         try {
             $userSocialite = Socialite::driver($provider)->user();
+
+            dd($userSocialite);
          
             $email = $this->emailRepository->findOneBy(['main' => $userSocialite->email]);
             if (!is_null($email)) {
