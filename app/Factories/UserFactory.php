@@ -31,9 +31,9 @@ class UserFactory
             ->setCreatedAt(new \DateTime())
             ->setUpdatedAt(new \DateTime())
             ->setRole($role)
-            ->setHashGithub($userInf['github'])
-            ->setHashFacebook($userInf['facebook'])
-            ->setHashGmail($userInf['gmail']);
+            ->setHashGithub(key_exists('github', $userInf) ? $userInf['github'] : null)
+            ->setHashFacebook(key_exists('facebook', $userInf) ? $userInf['facebook'] : null)
+            ->setHashGmail(key_exists('gmail', $userInf) ? $userInf['gmail'] : null);
 
         $email->setUser($user);
 
