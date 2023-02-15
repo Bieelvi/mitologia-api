@@ -58,7 +58,7 @@ class LoginController extends Controller
   
             return response()
                 ->redirectToRoute('home.index')
-                ->with('msg', "User successfully created");
+                ->with('msg', "User successfully logged in");
         } catch (ValidationException|PasswordException|NotFoundException $e) { 
             return back()
                 ->with('msgError', $e->getMessage());    
@@ -72,30 +72,46 @@ class LoginController extends Controller
     {
         try {
             $userSocialite = Socialite::driver($provider)->user();
-         
-            $email = $this->emailRepository->findOneBy(['main' => $userSocialite->email]);
-            if (!is_null($email)) {
-                return back()
-                    ->with('msgError', 'A user already exists for this email. Please choose another');
-            }
-    
+
             $user = $this->userFactory->factory([
                 'nickname' => $userSocialite->nickname,
                 'email' => $userSocialite->email,
                 'url_avatar' => $userSocialite->avatar,
-                'github' => $userSocialite->token
+                $provider => $userSocialite->token
             ]);
-    
-            EntityManager::persist($user);
-            EntityManager::flush();
+         
+            $email = $this->emailRepository->findOneBy(['main' => $userSocialite->email]);
+            if (!is_null($email)) {
 
-            $this->loginHandle->addActions(new CreateLoggedUserSession());
-            $this->loginHandle->addActions(new RegisterLogDatabase());
-            $this->loginHandle->execute($user);
+                $email->setMain($user->getEmail()->getMain())
+                    ->getUser()
+                    ->setUrlAvatar($user->getUrlAvatar())
+                    ->setNickname($user->getNickname())
+                    ->setHashGithub($user->getHashGithub())
+                    ->setHashFacebook($user->getHashFacebook())
+                    ->setHashGmail($user->getHashGmail());
+
+                EntityManager::flush();
+
+                $this->loginHandle->addActions(new CreateLoggedUserSession());
+                $this->loginHandle->addActions(new RegisterLogDatabase());
+                $this->loginHandle->execute($user);
+
+                return response()
+                    ->redirectToRoute('home.index')
+                    ->with('msg', "User successfully logged in with {$provider}");
+            } else {
+                EntityManager::persist($user);
+                EntityManager::flush();
     
-            return response()
-                ->redirectToRoute('home.index')
-                ->with('msg', "User successfully created with {$provider}");
+                $this->loginHandle->addActions(new CreateLoggedUserSession());
+                $this->loginHandle->addActions(new RegisterLogDatabase());
+                $this->loginHandle->execute($user);
+        
+                return response()
+                    ->redirectToRoute('home.index')
+                    ->with('msg', "User successfully created with {$provider}");
+            }   
         } catch (\Throwable $e) {
             return response()
                 ->redirectToRoute('login.index')
