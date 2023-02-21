@@ -67,10 +67,10 @@ class User extends \App\Entities\User implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'App\\Entities\\User' . "\0" . 'id', '' . "\0" . 'App\\Entities\\User' . "\0" . 'nickname', '' . "\0" . 'App\\Entities\\User' . "\0" . 'email', '' . "\0" . 'App\\Entities\\User' . "\0" . 'password', '' . "\0" . 'App\\Entities\\User' . "\0" . 'repeatPassword', '' . "\0" . 'App\\Entities\\User' . "\0" . 'hashedPassword', '' . "\0" . 'App\\Entities\\User' . "\0" . 'createdAt', '' . "\0" . 'App\\Entities\\User' . "\0" . 'updatedAt', '' . "\0" . 'App\\Entities\\User' . "\0" . 'access', '' . "\0" . 'App\\Entities\\User' . "\0" . 'role'];
+            return ['__isInitialized__', '' . "\0" . 'App\\Entities\\User' . "\0" . 'id', '' . "\0" . 'App\\Entities\\User' . "\0" . 'nickname', '' . "\0" . 'App\\Entities\\User' . "\0" . 'email', '' . "\0" . 'App\\Entities\\User' . "\0" . 'password', '' . "\0" . 'App\\Entities\\User' . "\0" . 'repeatPassword', '' . "\0" . 'App\\Entities\\User' . "\0" . 'hashedPassword', '' . "\0" . 'App\\Entities\\User' . "\0" . 'hashGithub', '' . "\0" . 'App\\Entities\\User' . "\0" . 'hashFacebook', '' . "\0" . 'App\\Entities\\User' . "\0" . 'hashGmail', '' . "\0" . 'App\\Entities\\User' . "\0" . 'urlAvatar', '' . "\0" . 'App\\Entities\\User' . "\0" . 'createdAt', '' . "\0" . 'App\\Entities\\User' . "\0" . 'updatedAt', '' . "\0" . 'App\\Entities\\User' . "\0" . 'access', '' . "\0" . 'App\\Entities\\User' . "\0" . 'role'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'App\\Entities\\User' . "\0" . 'id', '' . "\0" . 'App\\Entities\\User' . "\0" . 'nickname', '' . "\0" . 'App\\Entities\\User' . "\0" . 'email', '' . "\0" . 'App\\Entities\\User' . "\0" . 'password', '' . "\0" . 'App\\Entities\\User' . "\0" . 'repeatPassword', '' . "\0" . 'App\\Entities\\User' . "\0" . 'hashedPassword', '' . "\0" . 'App\\Entities\\User' . "\0" . 'createdAt', '' . "\0" . 'App\\Entities\\User' . "\0" . 'updatedAt', '' . "\0" . 'App\\Entities\\User' . "\0" . 'access', '' . "\0" . 'App\\Entities\\User' . "\0" . 'role'];
+        return ['__isInitialized__', '' . "\0" . 'App\\Entities\\User' . "\0" . 'id', '' . "\0" . 'App\\Entities\\User' . "\0" . 'nickname', '' . "\0" . 'App\\Entities\\User' . "\0" . 'email', '' . "\0" . 'App\\Entities\\User' . "\0" . 'password', '' . "\0" . 'App\\Entities\\User' . "\0" . 'repeatPassword', '' . "\0" . 'App\\Entities\\User' . "\0" . 'hashedPassword', '' . "\0" . 'App\\Entities\\User' . "\0" . 'hashGithub', '' . "\0" . 'App\\Entities\\User' . "\0" . 'hashFacebook', '' . "\0" . 'App\\Entities\\User' . "\0" . 'hashGmail', '' . "\0" . 'App\\Entities\\User' . "\0" . 'urlAvatar', '' . "\0" . 'App\\Entities\\User' . "\0" . 'createdAt', '' . "\0" . 'App\\Entities\\User' . "\0" . 'updatedAt', '' . "\0" . 'App\\Entities\\User' . "\0" . 'access', '' . "\0" . 'App\\Entities\\User' . "\0" . 'role'];
     }
 
     /**
@@ -239,7 +239,7 @@ class User extends \App\Entities\User implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function setPassword(string $password): \App\Entities\User
+    public function setPassword(?string $password): \App\Entities\User
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPassword', [$password]);
@@ -250,7 +250,7 @@ class User extends \App\Entities\User implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPassword', []);
@@ -261,7 +261,7 @@ class User extends \App\Entities\User implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function setRepeatPassword(string $repeatPassword): \App\Entities\User
+    public function setRepeatPassword(?string $repeatPassword): \App\Entities\User
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRepeatPassword', [$repeatPassword]);
@@ -272,7 +272,7 @@ class User extends \App\Entities\User implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getRepeatPassword(): string
+    public function getRepeatPassword(): ?string
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRepeatPassword', []);
@@ -388,6 +388,94 @@ class User extends \App\Entities\User implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRole', []);
 
         return parent::getRole();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setHashFacebook(?string $hashFacebook): \App\Entities\User
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHashFacebook', [$hashFacebook]);
+
+        return parent::setHashFacebook($hashFacebook);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getHashFacebook(): ?string
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHashFacebook', []);
+
+        return parent::getHashFacebook();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setHashGithub(?string $hashGithub): \App\Entities\User
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHashGithub', [$hashGithub]);
+
+        return parent::setHashGithub($hashGithub);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getHashGithub(): ?string
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHashGithub', []);
+
+        return parent::getHashGithub();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setHashGmail(?string $hashGmail): \App\Entities\User
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHashGmail', [$hashGmail]);
+
+        return parent::setHashGmail($hashGmail);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getHashGmail(): ?string
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHashGmail', []);
+
+        return parent::getHashGmail();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setUrlAvatar(?string $urlAvatar): \App\Entities\User
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUrlAvatar', [$urlAvatar]);
+
+        return parent::setUrlAvatar($urlAvatar);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getUrlAvatar(): ?string
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUrlAvatar', []);
+
+        return parent::getUrlAvatar();
     }
 
 }

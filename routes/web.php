@@ -1,53 +1,29 @@
 <?php
 
-use App\Entities\Email;
-use App\Entities\User;
-use App\Http\Controllers\EmailController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\LogoutController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\UserController;
-use App\Mail\VerifiedEmail;
-use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\{EmailController, LoginController, LogoutController, ProfileController, UserController};
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
-use LaravelDoctrine\ORM\Facades\EntityManager;
+use App\Http\Livewire\{Home, Login, User};
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+Route::get('/home', Home::class)->name('home');
+Route::get('/login', Login::class)->name('login.index');
+Route::get('/user', User::class)->name('user.index');
 
-Route::get('/', [HomeController::class, 'index'])->name('home.index');
-
-Route::get('/terms', [HomeController::class, 'index'])->name('home.index');
-
-Route::get('/user', [UserController::class, 'index'])->name('user.index');
 Route::post('/user', [UserController::class, 'store'])->name('user.store');
 
 Route::get('/login/{provider}', function ($provider) {
     try {
         return Socialite::driver($provider)->redirect();
     } catch (\Throwable $e) {
-        return back()->with('msgError', "Something happened when trying to login with {$provider}");
+        session()->with('msgError', "Something happened when trying to login with {$provider}");
     }
-});
+})->name('login.provider');
  
 Route::get('/login/{provider}/callback', [LoginController::class, 'loginSocialite']);
 
-Route::get('/login', [LoginController::class, 'index'])->name('login.index');
 Route::post('/login', [LoginController::class, 'login'])->name('login.login');
 
-Route::middleware('user.logged')->group(function() {
-    Route::get('/home', [HomeController::class, 'index'])->name('home.index');
-    
+Route::middleware('user.logged')->group(function() {    
     Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
     
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');

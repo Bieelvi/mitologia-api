@@ -272,7 +272,7 @@ class Email extends \App\Entities\Email implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function setVerifiedAt(\DateTime $verifiedAt): \App\Entities\Email
+    public function setVerifiedAt(?\DateTime $verifiedAt): \App\Entities\Email
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setVerifiedAt', [$verifiedAt]);
@@ -283,7 +283,7 @@ class Email extends \App\Entities\Email implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getVerifiedAt(): \DateTime
+    public function getVerifiedAt(): ?\DateTime
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVerifiedAt', []);
